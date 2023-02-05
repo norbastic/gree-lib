@@ -11,7 +11,7 @@ describe("scanner tests", () => {
 
     test("it binds one device", async () => {
         const deviceList = await scan("192.168.1.255");
-        const bindResult = await bindOne(deviceList[0], udp.createSocket("udp4").bind())       
+        const bindResult = await bindOne(deviceList[0]);       
 
         expect(bindResult.t).toBe("bindok");
     }, 10000000);

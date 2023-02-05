@@ -64,7 +64,8 @@ const discoverLocalDevices = async (broadcastAddress: string, scanTime: number =
 
 }
 
-export const bindOne = async (deviceInfo: DeviceInfo, socket: udp.Socket): Promise<BindResponse> => {
+export const bindOne = async (deviceInfo: DeviceInfo): Promise<BindResponse> => {
+    const socket = udp.createSocket("udp4");
     return new Promise((resolve, reject) => {
         try {
             const bindRequestPack = createBindRequestPack(deviceInfo.mac);
@@ -76,46 +77,46 @@ export const bindOne = async (deviceInfo: DeviceInfo, socket: udp.Socket): Promi
             socket.send(requestBytes, 0, requestBytes.length, 7000, deviceInfo.address);
 
             socket.on("error", (err) => {
+                socket.close();
                 reject(undefined);
             });
 
             socket.on("message", (msg, rinfo) => {
                 if(deviceInfo.address !== rinfo.address) {
+                    socket.close();
                     reject(undefined);
                 }
 
                 const message = msg.toString();
                 const bindResponse: PackInfo = JSON.parse(message);
                 if(bindResponse.t !== "pack") {
+                    socket.close();
                     reject(undefined);
                 }
 
                 const decryptedPack = decryptGenericData(bindResponse.pack);
                 if(decryptedPack) {
                     const decryptedObj: BindResponse = JSON.parse(decryptedPack);
+                    socket.close();
                     resolve(decryptedObj);
                 }                                                               
             }); 
    
         } catch(err) {
             //TODO: logging properly
+            socket.close();
             reject(undefined);
         }
     });
 }
 
 export const bindMultiple = async (deviceInfo: DeviceInfo[]): Promise<BindResponse[]> => {
-    const socket = udp.createSocket("udp4");
-    socket.bind();
-
     const bindAllResult: BindResponse[] = [];
 
     for (const devInfo of deviceInfo) {
-        const bindResult = await bindOne(devInfo, socket);
+        const bindResult = await bindOne(devInfo);
         bindAllResult.push(bindResult);   
     }
-
-    socket.close();
 
     return bindAllResult;
 }
