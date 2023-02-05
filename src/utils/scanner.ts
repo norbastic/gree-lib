@@ -3,8 +3,8 @@ import { Buffer } from 'node:buffer';
 import { PackInfo, DeviceResponse, DeviceInfo, BindRequestPack, createBindRequestPack, createRequest, BindResponse } from '../models/common-types';
 import { decryptGenericData, encryptGenericData } from '../crypto/crypto';
 
-export const scan = async (broadcastAddress: string): Promise<DeviceInfo[]> => {
-    const responses = await discoverLocalDevices(broadcastAddress);
+export const scan = async (broadcastAddress: string, scanTime: number = 2000): Promise<DeviceInfo[]> => {
+    const responses = await discoverLocalDevices(broadcastAddress, scanTime);
 
     const deviceInfoArray: DeviceInfo[] = [];
 

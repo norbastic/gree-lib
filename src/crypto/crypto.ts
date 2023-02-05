@@ -23,12 +23,6 @@ export const decryptCbcData = (input: string): string | undefined => {
   }
 }
 
-/*
-        const cipher = crypto.createCipheriv('aes-128-ecb', this._key, '');
-        const str = cipher.update(JSON.stringify(output), 'utf8', 'base64');
-        return str + cipher.final('base64')
-*/
-
 export const encryptGenericData = (input: string): string => {
   const aes = createCipheriv("aes-128-ecb", GENERIC_KEY, "");
   const str = aes.update(input, "utf8", "base64");
@@ -37,5 +31,6 @@ export const encryptGenericData = (input: string): string => {
 
 export const encryptCBCData = (input: string): string => {
   const aes = createCipheriv("aes-128-ecb", CBC_KEY, CBC_IV);
-  return aes.update(input).toString("utf8")
+  const str = aes.update(input, "utf8", "base64");
+  return str + aes.final("base64");
 }
