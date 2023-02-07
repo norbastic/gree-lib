@@ -1,4 +1,4 @@
-import { scan, bindMultiple, bindOne } from "../src/utils/scanner";
+import { scan, bindMultiple, bindOne } from "../src/scanner";
 import udp from "dgram";
 
 describe("scanner tests", () => {
@@ -13,7 +13,7 @@ describe("scanner tests", () => {
         const deviceList = await scan("192.168.1.255");
         const bindResult = await bindOne(deviceList[0]);       
 
-        expect(bindResult.t).toBe("bindok");
+        expect(bindResult.deviceKey).not.toBe(null);
     }, 10000000);
 
 
@@ -21,6 +21,6 @@ describe("scanner tests", () => {
         const deviceList = await scan("192.168.1.255");
         const bindResult = await bindMultiple(deviceList);        
 
-        expect(bindResult[0].t).toBe("bindok");
+        expect(bindResult[0].deviceKey).not.toBe(null);
     }, 10000000);
 });

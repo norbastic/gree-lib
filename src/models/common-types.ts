@@ -39,7 +39,7 @@ export type Request = BasePackInfo & {
     readonly pack: string;
 }
 
-export type BindRequestPack = {
+export type RequestPack = {
     readonly t: string;
     readonly mac: string;
     readonly uid: number;
@@ -50,9 +50,31 @@ export type BindResponse = {
     readonly mac: string;
     readonly key: string;
     readonly r: number;
+    
 }
 
-export const createBindRequestPack = (mac: string): BindRequestPack => {
+export type DeviceStatusRequestPack = RequestPack & {
+    readonly cols: string[];
+}
+
+export type ACDevice = {
+    readonly clientId: string;
+    readonly model: string;
+    readonly mac: string;
+    readonly name: string;
+    readonly address: string;
+    readonly deviceKey: string;
+}
+
+export type StatusData = {
+    readonly t: string;
+    readonly mac: string;
+    readonly r: number;
+    readonly cols: string[];
+    readonly dat: number[];
+}
+
+export const createBindRequestPack = (mac: string): RequestPack => {
     return {
         t: "bind",
         mac,
@@ -69,4 +91,13 @@ export const createRequest = (targetClientId: string, pack: string, i: number = 
         pack,
         uid: 0
     };
+}
+
+export const createStatusRequestPack = (mac: string, cols: string[]): DeviceStatusRequestPack => {
+    return {
+        t: "status",
+        mac,
+        cols,
+        uid: 0
+    }
 }

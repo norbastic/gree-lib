@@ -1,7 +1,7 @@
 import udp from 'node:dgram';
 import { Buffer } from 'node:buffer';
-import { PackInfo, DeviceResponse, DeviceInfo, BindRequestPack, createBindRequestPack, createRequest, BindResponse } from '../models/common-types';
-import { decryptGenericData, encryptGenericData } from '../crypto/crypto';
+import { PackInfo, DeviceResponse, DeviceInfo, createBindRequestPack, createRequest, BindResponse, ACDevice } from './models/common-types';
+import { decryptGenericData, encryptGenericData } from './crypto/crypto';
 
 export const scan = async (broadcastAddress: string, scanTime: number = 2000): Promise<DeviceInfo[]> => {
     const responses = await discoverLocalDevices(broadcastAddress, scanTime);
@@ -64,7 +64,7 @@ const discoverLocalDevices = async (broadcastAddress: string, scanTime: number =
 
 }
 
-export const bindOne = async (deviceInfo: DeviceInfo): Promise<BindResponse> => {
+export const bindOne = async (deviceInfo: DeviceInfo): Promise<ACDevice> => {
     const socket = udp.createSocket("udp4");
     return new Promise((resolve, reject) => {
         try {
@@ -98,7 +98,14 @@ export const bindOne = async (deviceInfo: DeviceInfo): Promise<BindResponse> => 
                 if(decryptedPack) {
                     const decryptedObj: BindResponse = JSON.parse(decryptedPack);
                     socket.close();
-                    resolve(decryptedObj);
+                    resolve({
+                        clientId: deviceInfo.cid,
+                        mac: deviceInfo.mac,
+                        name: deviceInfo.name,
+                        deviceKey: decryptedObj.key,
+                        model: deviceInfo.model,
+                        address: deviceInfo.address
+                    });
                 }                                                               
             }); 
    
@@ -110,8 +117,8 @@ export const bindOne = async (deviceInfo: DeviceInfo): Promise<BindResponse> => 
     });
 }
 
-export const bindMultiple = async (deviceInfo: DeviceInfo[]): Promise<BindResponse[]> => {
-    const bindAllResult: BindResponse[] = [];
+export const bindMultiple = async (deviceInfo: DeviceInfo[]): Promise<ACDevice[]> => {
+    const bindAllResult: ACDevice[] = [];
 
     for (const devInfo of deviceInfo) {
         const bindResult = await bindOne(devInfo);
