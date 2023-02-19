@@ -1,3 +1,19 @@
+import { AirParameter, 
+    DeviceParameterKeys, 
+    FanSpeedParameter, 
+    HealthParameter, 
+    LightsParameter, 
+    ModeParameter, 
+    PowerParameter, 
+    PowerSaveParameter, 
+    QuietParameter, 
+    SafetyHeatingParameter, 
+    SleepParameter, 
+    SwingHorizontalParameter, 
+    SwingVerticalParameter, 
+    TempUnitParameter, 
+    TurboParameter } from "../helpers/contants";
+
 export type DeviceResponse = {
     readonly json: string;
     readonly address: string;
@@ -42,7 +58,7 @@ export type Request = BasePackInfo & {
 export type RequestPack = {
     readonly t: string;
     readonly mac: string;
-    readonly uid: number;
+    readonly uid: number | null;
 }
 
 export type BindResponse = {
@@ -74,6 +90,36 @@ export type StatusData = {
     readonly dat: number[];
 }
 
+export type DeviceSetRequest = RequestPack & {
+    readonly opt: string[];
+    readonly p: number[];
+}
+
+export type DeviceSetResponse = {
+    readonly opt: string[];
+    readonly p: number[];
+}
+
+export type DeviceParameterKeyType = keyof typeof DeviceParameterKeys;
+
+
+export type DeviceParameter = Record<
+DeviceParameterKeyType, 
+PowerParameter | 
+ModeParameter | 
+TempUnitParameter | 
+FanSpeedParameter |
+AirParameter |
+HealthParameter |
+SleepParameter |
+LightsParameter |
+SwingHorizontalParameter |
+SwingVerticalParameter |
+QuietParameter |
+TurboParameter |
+PowerSaveParameter |
+SafetyHeatingParameter>
+
 export const createBindRequestPack = (mac: string): RequestPack => {
     return {
         t: "bind",
@@ -100,4 +146,17 @@ export const createStatusRequestPack = (mac: string, cols: string[]): DeviceStat
         cols,
         uid: 0
     }
+}
+
+export const createDeviceSetRequest = (clientId: string, parameters: Record<string, number>): DeviceSetRequest => {
+    const cols = Object.keys(parameters);
+    const values = Object.values(parameters);
+
+    return {
+        t: "cmd",
+        mac: clientId,
+        opt: cols,
+        p: values,
+        uid: null
+    };
 }
