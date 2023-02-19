@@ -17,5 +17,7 @@ const parameters: Record<string, number> = {
     [DeviceParameterKeys.Mode]: ModeParameter.heat,
     [DeviceParameterKeys.QuietMode]: QuietParameter.mode3      
 }
+
+// Returns true if it was successful, otherwise false.
 const updateResult = updateDevice(acDevice, parameters);
 ```
