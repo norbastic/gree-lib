@@ -15,11 +15,11 @@ describe("encryp and decrypt", () => {
 
         expect(obj?.brand).toBe("gree");
 
-    }, 1000000);
+    });
 
     test("encrypt and decrypt data", () => {
         const encrypted = encryptGenericData(dataInJson);
         
         expect(encrypted).toBe(data1);
-    }, 1000000);
+    });
 });
