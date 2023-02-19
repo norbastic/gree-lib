@@ -1,9 +1,10 @@
 {
   "name": "gree-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library to communicate with Gree ACs",
   "main": "index.ts",
   "scripts": {
+    "build": "tsc",
     "test": "jest --detectOpenHandles"
   },
   "author": "Norbert Farago",
