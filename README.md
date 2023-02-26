@@ -5,9 +5,9 @@ It's a very simple library for handling GREE air conditioners from Node.js.
 
 ## Basic usage
 ```typescript
-import { scan, bindOne } from "gree-lib/utils/scanner";
-import { getDeviceStatus, updateDevice } from "gree-lib/utils/device-handler";
-import { DeviceParameterKeys, ModeParameter, PowerParameter, QuietParameter } from "gree-lib/helpers/contants";
+import { scan, bindOne } from "gree-lib";
+import { getDeviceStatus, updateDevice } from "gree-lib";
+import { DeviceParameterKeys, ModeParameter, PowerParameter, QuietParameter } from "gree-lib";
 ...
 const devices = await scan("192.168.1.255"); // Broadcast address
 

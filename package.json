@@ -3,12 +3,17 @@
   "version": "1.0.3",
   "description": "Library to communicate with Gree ACs",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "test": "jest --detectOpenHandles"
   },
   "author": "Norbert Farago",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/norbastic/gree-lib.git"
+  },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^29.2.6",
