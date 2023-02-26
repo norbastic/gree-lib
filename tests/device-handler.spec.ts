@@ -1,7 +1,7 @@
-import { getDeviceStatus, updateDevice } from "../src/device-handler";
-import { DeviceParameterKeys, ModeParameter, PowerParameter, QuietParameter } from "../src/helpers/contants";
-import { createDeviceSetRequest } from "../src/models/common-types";
-import { scan, bindOne } from "../src/scanner";
+import { getDeviceStatus, updateDevice } from "../device-handler";
+import { DeviceParameterKeys, ModeParameter, PowerParameter, QuietParameter } from "../helpers/contants";
+import { createDeviceSetRequest } from "../models/common-types";
+import { scan, bindOne } from "../scanner";
 
 describe("device handler tests", () => {
     test("get status", async () => {

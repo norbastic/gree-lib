@@ -1,4 +1,4 @@
-import { scan, bindMultiple, bindOne } from "../src/scanner";
+import { scan, bindMultiple, bindOne } from "../scanner";
 
 describe("scanner tests", () => {
     test("scanner returns devices", async () => {
