@@ -1,7 +1,15 @@
 import { decryptGenericData, encryptGenericData } from "./crypto/crypto";
 import { DeviceParameterKeys } from "./helpers/contants";
-import { ACDevice, createRequest, Request, createStatusRequestPack, PackInfo, StatusData, DeviceParameter, createDeviceSetRequest, DeviceSetResponse } from "./models/common-types";
-import udp from "dgram";
+import { 
+    ACDevice,
+    createRequest,
+    Request,
+    createStatusRequestPack,
+    PackInfo,
+    StatusData,
+    createDeviceSetRequest,
+    DeviceSetResponse } from "./models/common-types";
+import udp from "node:dgram";
 
 const sendRequest = async (request: Request, address: string): Promise<PackInfo> => {
     const requestJson = JSON.stringify(request);

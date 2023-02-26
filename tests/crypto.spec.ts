@@ -1,5 +1,5 @@
-import { decryptGenericData, encryptGenericData } from "../crypto/crypto";
-import { DeviceInfo } from "../models/common-types";
+import { decryptGenericData, encryptGenericData } from "../src/crypto/crypto";
+import { DeviceInfo } from "../src/models/common-types";
 
 describe("encryp and decrypt", () => {
     const dataInJson = "{\"t\":\"dev\",\"cid\":\"f4911ed36c8d\",\"bc\":\"000000000000000000000000000000\",\"brand\":\"gree\",\"catalog\":\"gree\",\"mac\":\"f4911ed36c8d\",\"mid\":\"10007\",\"model\":\"gree\",\"name\":\"1ed36c8d\",\"series\":\"gree\",\"vender\":\"1\",\"ver\":\"V1.2.1\",\"lock\":0}"
