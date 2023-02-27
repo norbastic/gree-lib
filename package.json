@@ -2,8 +2,8 @@
   "name": "gree-lib",
   "version": "1.0.4",
   "description": "Library to communicate with Gree ACs",
-  "main": "index.ts",
-  "type": "module",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest --detectOpenHandles"
