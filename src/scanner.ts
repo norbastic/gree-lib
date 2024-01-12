@@ -117,6 +117,59 @@ export const bindOne = async (deviceInfo: DeviceInfo): Promise<ACDevice> => {
     });
 }
 
+/**
+  * Binds the source computer to the target device
+  *
+  * @function bindWithMAC
+  * @param {string} mac - MAC address of the device.
+  * @param {string} ipAddress - IP address of the device.
+  * @returns {string} The encryption key if bind was successful.
+  */
+export const bindWithMAC = async (mac: string, ipAddress: string): Promise<string | undefined> => {
+    const socket = udp.createSocket("udp4");
+    return new Promise((resolve, reject) => {
+        try {
+            const bindRequestPack = createBindRequestPack(mac);
+            const pack = encryptGenericData(JSON.stringify(bindRequestPack));
+            const request = createRequest(mac, pack, 1);
+            const requestJson = JSON.stringify(request);
+            const requestBytes = Buffer.from(requestJson, "ascii");
+
+            socket.send(requestBytes, 0, requestBytes.length, 7000, ipAddress);
+
+            socket.on("error", (err) => {
+                socket.close();
+                reject(undefined);
+            });
+
+            socket.on("message", (msg, rinfo) => {
+                if(ipAddress !== rinfo.address) {
+                    socket.close();
+                    reject(undefined);
+                }
+
+                const message = msg.toString();
+                const bindResponse: PackInfo = JSON.parse(message);
+                if(bindResponse.t !== "pack") {
+                    socket.close();
+                    reject(undefined);
+                }
+
+                const decryptedPack = decryptGenericData(bindResponse.pack);
+                if(decryptedPack) {
+                    const decryptedObj: BindResponse = JSON.parse(decryptedPack);
+                    socket.close();
+                    resolve(decryptedObj.key);
+                }                                                               
+            }); 
+   
+        } catch(err) {
+            socket.close();
+            reject(undefined);
+        }
+    });
+}
+
 export const bindMultiple = async (deviceInfo: DeviceInfo[]): Promise<ACDevice[]> => {
     const bindAllResult: ACDevice[] = [];
 
